@@ -23,9 +23,10 @@ from . import (
     timeframes,
     validation,
     observation,
+    quick_signal,
 )
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 __all__ = [
     "indicators",
@@ -39,5 +40,6 @@ __all__ = [
     "timeframes",
     "validation",
     "observation",
+    "quick_signal",
     "__version__",
 ]

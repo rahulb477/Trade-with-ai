@@ -1,6 +1,6 @@
 # AI Trading Intelligence — Universal Skill Repository
 
-**Version 1.0.0** · Educational research skill · Not investment advice
+**Version 1.1.0** · Educational research skill · Not investment advice — now with the **Quick Signal Output Engine** (mandatory compact report, default)
 
 A portable, platform-independent knowledge and research repository that teaches a compatible
 AI agent how to read a stock-chart screenshot, gather market context, reason about it with
@@ -58,17 +58,17 @@ Nothing else is required. No install step, no API key, no configuration wizard.
 |-------|------|----------|
 | Entry point | `SKILL.md` | Rules, modes, routing, status codes, checklists |
 | Agent mechanics | `AGENTS.md` | Loading order, loop control, fallbacks, refusal conditions |
-| Core logic | `core/` | Architecture, analysis engine, decision engine, evidence engine, risk, capability detection |
+| Core logic | `core/` | Architecture, analysis engine, decision engine, evidence engine, risk, capability detection + **quick-output-engine, verdict-rules, compact-report-rules** (new) |
 | Knowledge base | `knowledge/` | 25 candlestick patterns (26 variants), 18 indicators, 16 chart patterns, price action, market structure, smart money, fundamentals, quant, psychology, derivatives, risk, beginner education |
 | Strategies | `strategies/` | Scalping, intraday, swing, positional + mandatory validation gate |
 | Engines | `engines/` | 13 research engines (chart, market, technical, decision, quant, order flow, options, research agent, prediction tracking, backtesting, strategy discovery, self-evaluation, data integrity) |
-| Workflows | `workflows/` | Repeatable 8-step and 16-step procedures |
+| Workflows | `workflows/` | **Quick Signal workflows:** `quick-screenshot-analysis` (20 steps), `wait-confirmation`, `entry-validation`, `target-calculation` + legacy 8-step and 16-step procedures |
 | Markets | `markets/` | India, US, forex, commodities, crypto specifics — never interchangeable |
 | Data | `data-sources/` | Provider interfaces, no-key mode, source validation, API config |
-| Integrations | `integrations/` | Pure-stdlib Python library, browser research protocol, OCR guidance, agent adapters |
-| Templates | `templates/` | Report shells that enforce the mandatory format |
+| Integrations | `integrations/` | Pure-stdlib Python library (`quick_signal.py` new), browser research protocol, OCR guidance, agent adapters |
+| Templates | `templates/` | Quick report shells (`quick-signal-report`, `pending-setup-report`, `no-trade-report`) + legacy shells |
 | Examples | `examples/` | Worked analyses including a legitimate no-trade case |
-| Tests | `tests/` | 305 deterministic checks (stdlib `unittest`, no dependencies) |
+| Tests | `tests/` | **~370 deterministic checks** (stdlib `unittest`, no dependencies) — includes `tests/quick_output/` for the Quick Signal engine |
 | Docs | `docs/` | Architecture, installation, usage, compatibility, limitations, security, testing report |
 
 Counts are verified by [`scripts/audit_repo.py`](scripts/audit_repo.py).
@@ -82,6 +82,7 @@ Counts are verified by [`scripts/audit_repo.py`](scripts/audit_repo.py).
 ```python
 import sys; sys.path.insert(0, "integrations/python")
 from trading_intel import indicators as ind, risk, sizing, backtest, metrics
+from trading_intel.quick_signal import build_quick_signal, render_quick_text, render_quick_html
 
 rsi = ind.rsi(closes, period=14)           # Wilder-smoothed, List[Optional[float]]
 atr = ind.atr(highs, lows, closes, 14)
@@ -90,6 +91,15 @@ size = sizing.size_position(equity=500_000, entry=100, stop=95)
 
 print(plan.summary())                 # R_T1 1.4 -> validation_warnings() flags it
 print(size.as_dict())                 # units 750, risk_amount 3750.0
+
+# Quick Signal (new) — 8-12 line compact report
+out = build_quick_signal(instrument="BTCUSD", exchange="Bitstamp", timeframe="5m",
+                         direction="short", entry_low=67300, entry_high=67400,
+                         structural_stop=67800, levels_for_targets=[66900, 66500, 66200],
+                         atr=80, candle_state="unconfirmed_breakdown", support_level=67300,
+                         has_close_confirmation=False, quality_score=8)
+print(render_quick_text(out))         # compact report
+print(render_quick_html(out))         # dark-background visual
 ```
 
 - No numpy, no pandas, no network calls, no telemetry.
@@ -111,6 +121,22 @@ python3 -m unittest discover -s tests -t . -v
 | **LEARNING** | "explain a bull flag" | Teaching answer, no trade plan |
 | **RESEARCH** | "analyse this chart" | Full evidence-based report, conditions not calls |
 | **PAPER-TRADING** | "plan a hypothetical trade" | Report + Scenario A/B with entry, stop, T1–T3, R:R, invalidation |
+
+> **New in 1.1.0 — Quick Signal Output Engine (mandatory default).** Every chart response now defaults to **QUICK MODE**: a compact 8–12-line report with `Instrument | Exchange | Timeframe`, `VERDICT` (`WAIT` / `NO TRADE` / `PAPER-TRADING SETUP READY`), `WAIT UNTIL`, `ENTRY`, `STOP LOSS`, `TP1/TP2/TP3`, `RISK/REWARD`, one short reason + Hinglish, timestamp and disclaimer. The full 16-stage research still runs internally — it is simply compressed by default. Ask for `full analysis`, `/full`, `detailed analysis`, `explain this chart`, `why this entry?`, `show indicators`, `show news`, `show complete research` to get the full 10-section report. Engine: `core/quick-output-engine.md` + `integrations/python/trading_intel/quick_signal.py`.
+
+### Quick-signal example (illustrative)
+
+```
+BTCUSD | Bitstamp | 5m
+VERDICT: WAIT
+WAIT UNTIL: 5-minute candle closes below the identified support and the breakdown is confirmed.
+ENTRY: 67,300–67,400 — only after confirmation.
+STOP LOSS: 67,800
+TAKE PROFIT 1: 66,900–67,000  TAKE PROFIT 2: 66,500  TAKE PROFIT 3: 66,200
+RISK / REWARD: T1 1.8 | T2 2.9 | T3 4.2
+REASON: Price is consolidating below resistance. Wait for confirmation.
+Hinglish: Price resistance ke neeche hai. Breakout confirmation ka wait karo.
+```
 
 ---
 
@@ -164,8 +190,8 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 | Check | Result |
 |-------|--------|
-| Unit + repository-integrity tests | 305 passing |
-| Internal links | 0 broken across 212 Markdown files |
+| Unit + repository-integrity tests | **~370 passing (305 legacy + ~65 new quick-output)** |
+| Internal links | 0 broken across ~222 Markdown files |
 | Repository audit (structure, placeholders, credentials, imports) | PASS |
 | External dependencies | none |
 
