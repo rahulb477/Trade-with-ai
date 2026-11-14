@@ -6,6 +6,15 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased]
+
+### Added
+- `integrations/agent-adapters/arena.md` — adapter for hosted Arena Agent Mode sessions, documenting the
+  verified capability set (workspace clone, shell, image input, web tools, stdlib Python, writable journal),
+  a short system block, and the five-question activation check.
+- Arena column in the capability matrices (`integrations/agent-adapters/README.md`,
+  `docs/agent-compatibility.md`) and a row in the `AGENTS.md` §8 adapter table.
+
 ## [1.0.0] — 2026-11-14
 
 ### Verification snapshot
