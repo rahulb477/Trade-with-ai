@@ -1,6 +1,6 @@
 # Agent Adapters
 
-The same skill, expressed for seven agent environments.
+The same skill, expressed for eight agent environments.
 
 | File | For |
 |------|-----|
@@ -10,6 +10,7 @@ The same skill, expressed for seven agent environments.
 | [`gemini-cli.md`](gemini-cli.md) | Gemini CLI |
 | [`cursor.md`](cursor.md) | Cursor (in-editor) |
 | [`windsurf.md`](windsurf.md) | Windsurf |
+| [`arena.md`](arena.md) | Arena Agent Mode (workspace + shell + vision) |
 | [`generic.md`](generic.md) | Any agent: the minimal contract |
 
 ## The portable core
@@ -26,14 +27,14 @@ Adapters differ only in *how* they load files, call tools, and persist output.
 
 ## Capability matrix
 
-| Capability | Claude Code | Codex | ChatGPT | Gemini CLI | Cursor | Windsurf | Generic |
-|-----------|------------|-------|---------|-----------|--------|----------|---------|
-| Read repo files | ✅ | ✅ | ⚠️ uploads | ✅ | ✅ | ✅ | ⚠️ |
-| See images | ✅ | ⚠️ | ✅ | ⚠️ | ✅ | ✅ | ⚠️ |
-| Browse web | ⚠️ tools | ⚠️ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ |
-| Execute code | ✅ | ✅ | ✅ (interpreter) | ✅ | ⚠️ | ⚠️ | ❌ |
-| Persist files | ✅ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ❌ |
-| Long context | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ |
+| Capability | Claude Code | Codex | ChatGPT | Gemini CLI | Cursor | Windsurf | Arena | Generic |
+|-----------|------------|-------|---------|-----------|--------|----------|-------|---------|
+| Read repo files | ✅ | ✅ | ⚠️ uploads | ✅ | ✅ | ✅ | ✅ | ⚠️ |
+| See images | ✅ | ⚠️ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ⚠️ |
+| Browse web | ⚠️ tools | ⚠️ | ✅ | ⚠️ | ⚠️ | ⚠️ | ✅ tools | ❌ |
+| Execute code | ✅ | ✅ | ✅ (interpreter) | ✅ | ⚠️ | ⚠️ | ✅ | ❌ |
+| Persist files | ✅ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Long context | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ |
 
 ✅ reliable · ⚠️ depends on configuration · ❌ unavailable
 

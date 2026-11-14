@@ -12,14 +12,14 @@ Everything else is an optimisation. Vision, browsing, and code execution each *r
 
 ## 2. Capability matrix
 
-| Capability | Claude Code | Codex | ChatGPT | Gemini CLI | Cursor | Windsurf | Generic chat |
-|-----------|------------|-------|---------|-----------|--------|----------|--------------|
-| Read repo files | ✅ | ✅ | ⚠️ uploads | ✅ | ✅ | ✅ | ⚠️ |
-| Read images | ✅ | ⚠️ | ✅ | ⚠️ | ✅ | ✅ | ⚠️ |
-| Web access | ⚠️ | ⚠️ | ✅ | ⚠️ | ⚠️ | ⚠️ | ❌ |
-| Code execution | ✅ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ❌ |
-| Persist output | ✅ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ❌ |
-| Long context | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ |
+| Capability | Claude Code | Codex | ChatGPT | Gemini CLI | Cursor | Windsurf | Arena | Generic chat |
+|-----------|------------|-------|---------|-----------|--------|----------|-------|--------------|
+| Read repo files | ✅ | ✅ | ⚠️ uploads | ✅ | ✅ | ✅ | ✅ | ⚠️ |
+| Read images | ✅ | ⚠️ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ⚠️ |
+| Web access | ⚠️ | ⚠️ | ✅ | ⚠️ | ⚠️ | ⚠️ | ✅ tools | ❌ |
+| Code execution | ✅ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ | ✅ | ❌ |
+| Persist output | ✅ | ✅ | ⚠️ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Long context | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚠️ | ⚠️ |
 
 ✅ reliable · ⚠️ configuration-dependent · ❌ unavailable
 
@@ -36,6 +36,7 @@ capability — and never let an agent claim one it has not demonstrated.
 | Gemini CLI | bulk reading, long context | vision varies | `../integrations/agent-adapters/gemini-cli.md` |
 | Cursor | editing knowledge and code | not a research environment | `../integrations/agent-adapters/cursor.md` |
 | Windsurf | multi-step pipelines | cascade drift | `../integrations/agent-adapters/windsurf.md` |
+| Arena Agent Mode | workspace repo + shell + vision in one hosted chat | no live data provider ships; memory must not substitute for tools | `../integrations/agent-adapters/arena.md` |
 | Generic | anything | no tools at all | `../integrations/agent-adapters/generic.md` |
 
 ## 4. Degradation behaviour (normative)

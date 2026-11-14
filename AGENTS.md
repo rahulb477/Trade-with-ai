@@ -224,6 +224,7 @@ Platform mechanics differ. Do not pretend otherwise — read the adapter for you
 | Gemini CLI | `integrations/agent-adapters/gemini-cli.md` | `integrations/agent-adapters/gemini-cli.md` context file |
 | Cursor | `integrations/agent-adapters/cursor.md` | `.cursor/rules` project rules |
 | Windsurf | `integrations/agent-adapters/windsurf.md` | rules file equivalent |
+| Arena Agent Mode | `integrations/agent-adapters/arena.md` | cloned workspace + shell + image input |
 | Generic / no filesystem | `integrations/agent-adapters/generic.md` | Paste SKILL.md; degrade gracefully |
 
 If your host is not listed, use `integrations/agent-adapters/generic.md`. The **core knowledge never depends on an
