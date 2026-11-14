@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# Secrets — never commit credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# Local data caches (bring your own licensed data; do not commit datasets)
+data/
+cache/
+*.csv
+*.parquet
+!tests/fixtures/**/*.csv
+
+# Personal records (predictions, journals, screenshots) — keep local
+journal/**
+!journal/README.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
