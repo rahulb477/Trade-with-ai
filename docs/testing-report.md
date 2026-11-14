@@ -9,10 +9,12 @@ with the command shown in §1.
 
 ```bash
 cd <repo root>
-python3 -m unittest discover -s tests -t . -v     # unit + repository-integrity tests
+python3 -m unittest discover -s tests -t . -v     # unit + repository-integrity + backend E2E tests
 python3 scripts/check_links.py                    # internal links
 python3 scripts/audit_repo.py                     # structure, placeholders, credentials, imports
 ./scripts/run_all_tests.sh                        # all three, in order
+npm run test:web                                  # frontend React/TypeScript component & upload tests
+npm run build                                     # Next.js production build verification
 ```
 
 Environment used:
@@ -184,6 +186,7 @@ violates the spirit of these rules; the gates reduce the probability and the rec
 |------|--------|
 | 2026-11-14 | Initial report: 305 tests, 0 broken links, audit PASS, 8 ranked gaps |
 | 2026-11-14 | 1.1.0 update: ~370 tests (305 legacy + quick_output), 0 broken links across ~222 files, audit PASS. Added Quick Signal Output Engine (core docs, workflows, templates, library, tests) as the mandatory default. Preserved V1–V3. |
+| 2026-11-14 | Web Application integration: **402 Python tests** (305 legacy + 86 quick_output/repo + 11 backend/HTTP E2E) + **9 Frontend Vitest tests**, 0 broken links across 224 Markdown files, repository audit PASS, Next.js 14 production build PASS. See [`docs/web-deployment.md`](web-deployment.md). |
 
 ## 11. Deliverables checklist
 

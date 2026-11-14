@@ -80,7 +80,10 @@ CREDENTIAL_PATTERNS = [
     (re.compile(r"-----BEGIN (RSA |EC )?PRIVATE KEY-----"), "private key"),
 ]
 
-SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "build", "dist", ".pytest_cache"}
+SKIP_DIRS = {
+    ".git", "__pycache__", "node_modules", ".venv", "build", "dist", ".pytest_cache",
+    ".next", ".playwright-cli", "coverage", "out", "data", "cache",
+}
 MIN_MD_BYTES = 400
 
 
