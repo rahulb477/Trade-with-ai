@@ -11,12 +11,13 @@ Read both. Then start.
 
 ```
 STEP 0  Detect capabilities          -> core/capability-detection.md
-STEP 1  Parse the user's request     -> mode? instrument? question? image?
-STEP 2  Load routing rows            -> SKILL.md §4
-STEP 3  Load report template         -> templates/analysis-report.md
-STEP 4  Execute the 16-stage pipeline -> SKILL.md §5
-STEP 5  Self-check                   -> SKILL.md §10 (definition of done)
-STEP 6  Emit report                  -> markdown, no preamble
+STEP 1  Parse the user's request     -> mode? instrument? question? image? + quick vs full via quick_signal.detect_mode
+STEP 2  Load routing rows            -> SKILL.md §4 (quick-mode rows are new and mandatory)
+STEP 3  Load report template         -> QUICK: templates/quick-signal-report.md  |  FULL: templates/analysis-report.md
+STEP 4  Execute the pipeline         -> QUICK: workflows/quick-screenshot-analysis.md (20 internal checks, compact surface)
+                                      FULL : SKILL.md §5 / workflows/screenshot-analysis.md (16 stages, 10-section report)
+STEP 5  Self-check                   -> SKILL.md §10 (quick vs full definition of done)
+STEP 6  Emit report                  -> markdown, no preamble  (quick: 8–12 short lines; full: 10 sections)
 STEP 7  Record (if persistence)      -> templates/prediction-record.md
 ```
 
@@ -126,6 +127,39 @@ Refuse politely, or downgrade, when:
 
 ## 6. Output contract
 
+**Default (QUICK MODE)** — every chart response renders the compact report unless the user explicitly requests full analysis. QUICK has priority:
+
+```markdown
+BTCUSD | Bitstamp | 5m
+
+VERDICT: WAIT | NO TRADE | PAPER-TRADING SETUP READY
+
+WAIT UNTIL: <condition sentence — never a time or countdown>
+
+ENTRY: <67,300–67,400 or NOT AVAILABLE — INSUFFICIENT DATA>
+
+STOP LOSS: <67,800 or NOT AVAILABLE — INSUFFICIENT DATA>
+
+TAKE PROFIT 1: <66,900–67,000 or NOT AVAILABLE>
+
+TAKE PROFIT 2: <66,500 or NOT AVAILABLE>
+
+TAKE PROFIT 3: <66,200 or NOT AVAILABLE>
+
+RISK / REWARD: <T1 1.80 | T2 2.90 … or NOT AVAILABLE>
+
+REASON: <one short English sentence>
+
+Hinglish: <one short Hinglish sentence>
+
+Data: <timestamp> | Freshness: <LIVE/RECENT/DELAYED/STALE/HISTORICAL>
+<disclaimer>
+```
+
+Render with `templates/quick-signal-report.md` / `integrations/python/trading_intel/quick_signal.py::render_quick_text`. Quick output is ~8–12 short lines, every price traceable or the sentinel, no fabricated price/probability/countdown. See `core/quick-output-engine.md`, `core/compact-report-rules.md`.
+
+**Full mode (explicit request only)** — triggers: `/full`, `full analysis`, `detailed analysis`, `explain this chart`, `why this entry?`, `show indicators`, `show news`, `show complete research`.
+
 Emit Markdown with this skeleton. Do not add motivational filler before it.
 
 ```markdown
@@ -155,10 +189,10 @@ Emit Markdown with this skeleton. Do not add motivational filler before it.
 
 Rules:
 
-- Sections 1–5, 7–9 are **mandatory**. Section 6 may be empty **only** with the explicit
-  sentence "web research unavailable in this environment".
+- **Quick mode:** labels above are mandatory; no long paragraphs, indicator tables, news dumps or backtest tables. Full research remains internal and available in full mode.
+- **Full mode:** Sections 1–5, 7–9 are **mandatory**. Section 6 may be empty **only** with the explicit sentence "web research unavailable in this environment".
 - Section 10 is mandatory in every mode, even LEARNING.
-- Use the exact status codes from `SKILL.md` §6.
+- Use the exact status codes from `SKILL.md` §6 (full) or `core/verdict-rules.md` (quick).
 
 ---
 

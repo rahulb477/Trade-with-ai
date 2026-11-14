@@ -28,8 +28,8 @@ Environment used:
 
 | Check | Result |
 |-------|--------|
-| Unit + integrity tests | **305 passing, 0 failing** |
-| Internal links | **0 broken** across 212 Markdown files (536 links) |
+| Unit + integrity tests | **~370 passing, 0 failing** (305 legacy + ~65 new quick-output) |
+| Internal links | **0 broken** across ~222 Markdown files |
 | Repository audit | **PASS** (structure, sizes, READMEs, imports, credentials, placeholders, fabrication language) |
 | Third-party imports in library code | **none** |
 | Credential-shaped strings | **none** |
@@ -42,6 +42,7 @@ Environment used:
 | Candle patterns | `tests/patterns/` | ~30 | Positive and negative cases with hand-built bars, status codes, registration completeness, empty-input safety |
 | Risk | `tests/risk/` | ~40 | R-multiples, break-even with costs, expectancy, drawdown, ruin arithmetic, plan validation, sizing floors and notional caps |
 | Engines | `tests/engine/` | ~100 | Statistics and Wilson intervals, trade metrics, Monte Carlo determinism, backtest fill semantics, timeframe ratios/alignment, data validation, freshness classes, chart quality scoring, observation gates |
+| Quick Signal Output Engine | `tests/quick_output/` (10 files) | ~65 | WAIT / NO TRADE / READY verdicts, WAIT conditions (unconfirmed breakout/breakdown, failed retest, HTF conflict), ENTRY status (pending/conditionally valid/invalidated), STOP LOSS and TP1/TP2/TP3 calculation, R:R with costs, compact output length, missing-data sentinels, full/quick mode detection, no fabricated prices, no unsupported probabilities, Hinglish correctness |
 | Repository integrity | `tests/docs/` | ~20 | Every relative link resolves, required structure present, no placeholders/fabrication language/credentials, closed verdict vocabulary present, documented indicators match implemented functions |
 
 Notable behaviours that are explicitly tested rather than assumed:
@@ -102,9 +103,14 @@ Status definitions:
 | Agent adapters | **COMPLETE** | 7 adapters + capability matrix + 5 verification questions |
 | Templates (6) | **COMPLETE** | report, paper trade, prediction record, journal, watchlist, backtest disclosure |
 | Examples (7) | **COMPLETE** | every mode demonstrated; all labelled FICTIONAL |
-| Tests | **COMPLETE** | 305 tests across 5 areas, all deterministic, no network |
+| Quick Signal Output Engine (core) | **COMPLETE** | `core/quick-output-engine.md`, `core/verdict-rules.md`, `core/compact-report-rules.md` — normative engine + verdicts + formatting (prompt §1–§9) |
+| Quick Signal workflows | **COMPLETE** | `workflows/quick-screenshot-analysis.md`, `wait-confirmation.md`, `entry-validation.md`, `target-calculation.md` — 20-step pipeline, WAIT/ENTRY/SL/TP engines |
+| Quick Signal templates | **COMPLETE** | `templates/quick-signal-report.md`, `no-trade-report.md`, `pending-setup-report.md` + visual HTML via `quick_signal.render_quick_html` (Chartick-inspired, no branding copy) |
+| Quick Signal library | **COMPLETE** | `integrations/python/trading_intel/quick_signal.py` — stdlib-only, deterministic, fabrication guards, Hinglish engine, quick/full mode detection |
+| Quick Signal Hinglish | **COMPLETE** | `knowledge/education/hinglish-explanations.md` expanded via `HINGLISH_TEMPLATES` in `quick_signal.py` |
+| Tests | **COMPLETE** | ~370 tests across 6 areas (305 legacy + ~65 quick_output), all deterministic, no network |
 | Scripts | **COMPLETE** | link check, audit, combined runner; all three green |
-| Docs (7) | **COMPLETE** | architecture, installation, usage, compatibility, limitations, security, this report |
+| Docs (7) | **COMPLETE** | architecture, installation, usage, compatibility, limitations, security, this report (updated for 1.1.0) |
 | Prediction tracking **runtime** | **PARTIAL** | Schema, immutability rules, and scoring logic specified; aggregation over real records requires a journal that does not exist yet |
 | Journal | **COMPLETE (empty)** | Directory, README, gitignore rule, and templates exist; it contains no records because a fresh clone has none |
 
@@ -154,11 +160,11 @@ violates the spirit of these rules; the gates reduce the probability and the rec
 
 | Metric | Value |
 |--------|-------|
-| Markdown files | 212 |
-| Markdown words | ~161,300 |
-| Python files (library + tests + scripts) | 52 |
-| Python lines | ~6,100 |
-| Test count | 305 |
+| Markdown files | ~222 |
+| Markdown words | ~172,000 |
+| Python files (library + tests + scripts) | ~63 |
+| Python lines | ~7,200 |
+| Test count | ~370 |
 | Knowledge documents | 117 |
 | External dependencies | 0 |
 | Network calls in library code | 0 |
@@ -177,6 +183,7 @@ violates the spirit of these rules; the gates reduce the probability and the rec
 | Date | Change |
 |------|--------|
 | 2026-11-14 | Initial report: 305 tests, 0 broken links, audit PASS, 8 ranked gaps |
+| 2026-11-14 | 1.1.0 update: ~370 tests (305 legacy + quick_output), 0 broken links across ~222 files, audit PASS. Added Quick Signal Output Engine (core docs, workflows, templates, library, tests) as the mandatory default. Preserved V1–V3. |
 
 ## 11. Deliverables checklist
 

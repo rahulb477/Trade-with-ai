@@ -64,6 +64,8 @@ one short clarifying question.
 | **RESEARCH** | "analyse this chart", "what's NIFTY doing", "is this a bull trap?" | Full analysis report. Scenarios described as *observations about conditions*, entry levels optional. | [`workflows/screenshot-analysis.md`](workflows/screenshot-analysis.md) |
 | **PAPER-TRADING** | "give me entry/stop/target", "plan a trade on this" | Full analysis report + hypothetical Scenario A/B with entry zone, invalidation, T1/T2/T3, R:R. Still not advice. | [`workflows/paper-trading.md`](workflows/paper-trading.md) |
 
+> **Quick Signal Output Engine (NEW — mandatory default).** Every chart response defaults to **QUICK MODE**: a compact 8–12-line report with Instrument | Exchange | Timeframe, Verdict (WAIT / NO TRADE / PAPER-TRADING SETUP READY), WAIT UNTIL, ENTRY, STOP LOSS, TP1/TP2/TP3, RISK/REWARD, and one short reason + Hinglish. See [`core/quick-output-engine.md`](core/quick-output-engine.md), [`core/verdict-rules.md`](core/verdict-rules.md), [`core/compact-report-rules.md`](core/compact-report-rules.md), and [`workflows/quick-screenshot-analysis.md`](workflows/quick-screenshot-analysis.md). Full analysis is available only on explicit request (`/full`, `full analysis`, `detailed analysis`, `explain this chart`, `why this entry?`, `show indicators`, `show news`, `show complete research`).
+
 Every report header must state the active mode.
 
 ---
@@ -211,7 +213,9 @@ Execute in order. Each stage has a gate; if a gate fails, downgrade the output �
 
 ---
 
-## 6. Verdict vocabulary (closed set — no other verdict text is permitted)
+## 6. Verdict vocabulary (closed set — no other verdict text is permitted for the full report path)
+
+> **Quick-mode mapping:** The default compact report uses a three-term vocabulary — `WAIT`, `NO TRADE`, `PAPER-TRADING SETUP READY` — defined in [`core/verdict-rules.md`](core/verdict-rules.md) and implemented in `integrations/python/trading_intel/quick_signal.py`. The five legacy verdicts below remain normative for the full report path and are preserved for backward compatibility (tests assert their presence).
 
 | Verdict | When |
 |---------|------|
@@ -276,9 +280,19 @@ If any box fails → `WAIT — NO CONFIRMED SETUP` and say which box failed.
 
 | Purpose | File |
 |---------|------|
-| Report shell (mandatory) | `templates/analysis-report.md` |
-| Paper-trade shell | `templates/paper-trade-report.md` |
-| Step-by-step screenshot workflow | `workflows/screenshot-analysis.md` |
+| Quick-mode report shell (default) | `templates/quick-signal-report.md` |
+| Pending/WAIT quick shell | `templates/pending-setup-report.md` |
+| No-trade quick shell | `templates/no-trade-report.md` |
+| Quick screenshot workflow (20 steps) | `workflows/quick-screenshot-analysis.md` |
+| WAIT engine | `workflows/wait-confirmation.md` |
+| ENTRY engine | `workflows/entry-validation.md` |
+| STOP/TP engine | `workflows/target-calculation.md` |
+| Quick Signal logic (Python) | `integrations/python/trading_intel/quick_signal.py` |
+| Compact formatting rules | `core/compact-report-rules.md` |
+| Quick verdict rules | `core/verdict-rules.md` |
+| Report shell (full mode) | `templates/analysis-report.md` |
+| Paper-trade shell (full mode) | `templates/paper-trade-report.md` |
+| Step-by-step screenshot workflow (full) | `workflows/screenshot-analysis.md` |
 | Beginner wording | `workflows/beginner-explanation.md` |
 | Glossary (Hinglish + English) | `knowledge/education/glossary.md` |
 | Hinglish teaching patterns | `knowledge/education/hinglish-explanations.md` |
@@ -291,6 +305,19 @@ If any box fails → `WAIT — NO CONFIRMED SETUP` and say which box failed.
 
 Before sending, verify:
 
+**Quick mode (default — compact report):**
+
+1. Header (instrument | exchange | timeframe) present.
+2. Verdict is one of `WAIT` / `NO TRADE` / `PAPER-TRADING SETUP READY`.
+3. `WAIT UNTIL:` names a condition, never a time or countdown.
+4. ENTRY / STOP LOSS / TP1/TP2/TP3 present or `NOT AVAILABLE — INSUFFICIENT DATA` / `NOT AVAILABLE`.
+5. Risk/reward computed from verified entry/stop/targets (or sentinel if insufficient).
+6. One short reason in plain English + one Hinglish line — no new numeric claims, no certainty language.
+7. No fabricated price, probability or countdown; every price traceable or sentinel.
+8. Output is ~8–12 short labelled lines; no long paragraphs, indicator tables, news dumps or backtest tables.
+
+**Full mode (explicit request — 10-section report):**
+
 1. Header block complete (instrument, exchange, both timestamps, timeframe, data source, mode).
 2. All ten report sections present, or omissions explicitly justified.
 3. Every numeric claim is traceable to the image, a tool result, or a citation.
@@ -299,7 +326,7 @@ Before sending, verify:
 6. Section 10 lists sources, freshness, and what is missing.
 7. No advice, no promised returns, no invented experience, no fake statistics.
 
-If you cannot meet these, say what is missing and stop at `INSUFFICIENT DATA`.
+If you cannot meet the relevant checklist, say what is missing and return `INSUFFICIENT DATA` (full) or `NOT AVAILABLE — INSUFFICIENT DATA` (quick).
 
 ---
 
