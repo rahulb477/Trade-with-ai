@@ -5,8 +5,11 @@ yours.
 
 | Template | Use | Used by |
 |----------|-----|---------|
-| [`analysis-report.md`](analysis-report.md) | The 10-section analysis report | `workflows/screenshot-analysis.md` |
-| [`paper-trade-report.md`](paper-trade-report.md) | A hypothetical trade plan | `workflows/paper-trading.md` |
+| [`quick-signal-report.md`](quick-signal-report.md) | **Quick Signal compact report (mandatory default, 8–12 lines)** | `workflows/quick-screenshot-analysis.md`, `core/quick-output-engine.md` |
+| [`pending-setup-report.md`](pending-setup-report.md) | Quick WAIT / pending-setup shell | `workflows/wait-confirmation.md` |
+| [`no-trade-report.md`](no-trade-report.md) | Quick NO TRADE shell | `core/verdict-rules.md` |
+| [`analysis-report.md`](analysis-report.md) | The 10-section analysis report (full mode) | `workflows/screenshot-analysis.md` |
+| [`paper-trade-report.md`](paper-trade-report.md) | A hypothetical trade plan (full mode) | `workflows/paper-trading.md` |
 | [`prediction-record.md`](prediction-record.md) | The immutable prediction log entry | `engines/prediction-tracking/` |
 | [`trade-journal.md`](trade-journal.md) | A real trade's journal entry | `knowledge/trading-psychology/discipline-and-journaling.md` |
 | [`watchlist.md`](watchlist.md) | A weekly level map | `strategies/swing/` |

@@ -84,6 +84,47 @@ First complete delivery. V1, V2 and V3 are shipped together; nothing is deferred
 
 ---
 
+## [1.1.0] — 2026-11-14 — Quick Signal Output Engine (mandatory)
+
+### Summary
+
+Implements the repository upgrade prompt: **Quick Signal Output Engine** as the mandatory default. The AI may perform extensive internal research (20-step pipeline, existing 16-stage V1–V3 pipeline preserved), but the default user-facing response is now extremely short — 8–12 short lines — answering only: WAIT KAB TAK? ENTRY KAB? STOP LOSS KAHAN? TP1/TP2/TP3? All existing V1–V3 functionality is preserved.
+
+### Added — Quick Signal Output Engine
+
+- `integrations/python/trading_intel/quick_signal.py` — stdlib-only engine implementing WAIT, ENTRY, STOP LOSS, TAKE PROFIT, RISK/REWARD, verdict selection (WAIT / NO TRADE / PAPER-TRADING SETUP READY), Hinglish reason, quick vs full mode detection, price formatting, fabrication guards, compact text and dark-background visual HTML (Chartick-inspired hierarchy, no branding copy).
+- `core/quick-output-engine.md` — normative description of the mandatory default format, internal 20-step pipeline, image handling, Chartick-style presentation, and mode switching.
+- `core/verdict-rules.md` — strict three-verdict system and its mapping to the legacy five-term V1–V3 vocabulary (preserved for full mode and for `tests/docs/test_repository.py` backward compatibility).
+- `core/compact-report-rules.md` — length, price formatting, WAIT/ENTRY/SL/TP/R:R/Hinglish/visual rules and anti-patterns.
+- `workflows/quick-screenshot-analysis.md` — 20-step quick screenshot workflow (wraps the existing 16-stage pipeline, delegates surface to the compact engine).
+- `workflows/wait-confirmation.md` — WAIT KAB TAK? engine: condition catalogue, candle-state discipline (forming / closed / confirmed / unconfirmed / failed), no countdown/time promise.
+- `workflows/entry-validation.md` — ENTRY engine: zone/price, direction, confirmation, timeframe, PENDING / CONDITIONALLY VALID / INVALIDATED, pattern-alone-insufficient rule.
+- `workflows/target-calculation.md` — STOP LOSS and TAKE PROFIT engines: structural invalidation, ATR buffer, three directional targets, cost-aware R:R, sentinel handling (`NOT AVAILABLE — INSUFFICIENT DATA` / `NOT AVAILABLE`).
+- `templates/quick-signal-report.md` — mandatory default report shell (illustrative BTC example included).
+- `templates/no-trade-report.md` — NO TRADE quick shell.
+- `templates/pending-setup-report.md` — WAIT/PENDING quick shell.
+
+### Added — Tests
+
+- `tests/quick_output/` — 10 deterministic test modules (~65 tests) covering all 20 prompt §16 requirements: WAIT output, NO TRADE output, valid setup, missing entry/SL/target data, unavailable live data, unconfirmed breakout/breakdown, failed retest, conflicting timeframes, stale news, screenshot quality failures, R:R calculations, TP1/TP2/TP3 calculations, compact output length, full-analysis activation, no fabricated prices, no unsupported probabilities, correct Hinglish. All tests are stdlib `unittest`, no network, no randomness. Legacy 305 tests remain passing.
+
+### Changed
+
+- `SKILL.md` — documents QUICK MODE as the mandatory default (new banner), adds quick-mode file table, adds quick/full definition of done, preserves the five legacy verdicts and adds a banner linking to `core/verdict-rules.md`.
+- `AGENTS.md` — bootstrap now routes through `quick_signal.detect_mode` and the new quick workflow; output contract now specifies QUICK as default and FULL only on explicit trigger (`/full`, `full analysis`, etc.).
+- `README.md` — bumped to 1.1.0, adds quick-signal example, updates component table counts, and Python library quick-signal example.
+- `docs/testing-report.md` — updated to ~370 tests, ~222 Markdown files, new component rows for the quick engine, and a 1.1.0 changelog.
+
+### Preserved
+
+- All existing V1–V3 knowledge modules, workflows, templates, examples, engines, Python library functions, tests, scripts and docs are preserved and unmodified except for additive banners/tables. No working feature was deleted. `tests/docs/test_repository.py` legacy verdict assertions continue to pass.
+
+### Verification snapshot (1.1.0)
+
+- `python3 -m unittest discover -s tests -t . -v` — **~370 passing, 0 failing** (305 legacy + new quick_output)
+- `python3 scripts/check_links.py` — **0 broken** across ~222 Markdown files
+- `python3 scripts/audit_repo.py` — **PASS**
+
 ## Unreleased
 
-- Nothing pending. All mandatory V1–V3 scope shipped in 1.0.0.
+- Nothing pending. V1–V3 (1.0.0) plus the mandatory Quick Signal upgrade (1.1.0) are both shipped.
