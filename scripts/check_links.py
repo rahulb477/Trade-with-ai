@@ -31,7 +31,10 @@ def iter_markdown(root: str) -> List[str]:
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [
             d for d in dirnames
-            if d not in {".git", "node_modules", "__pycache__", ".venv", "build", "dist"}
+            if d not in {
+                ".git", "node_modules", "__pycache__", ".venv", "build", "dist",
+                ".next", ".playwright-cli", "coverage", "out", "data", "cache",
+            }
         ]
         for name in filenames:
             if name.endswith(".md"):

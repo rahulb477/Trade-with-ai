@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+html[data-theme='dark'] {
+  --bg-primary: #080D19;
+  --bg-secondary: #101827;
+  --bg-card: #111C2D;
+  --bg-elevated: #17253B;
+  --border-subtle: #1F2E47;
+  --text-primary: #E8EDF7;
+  --text-muted: #8D9AB0;
+  --accent-primary: #667AFF;
+  --accent-success: #16B995;
+  --accent-danger: #F16F83;
+}
+
+html[data-theme='midnight'] {
+  --bg-primary: #050811;
+  --bg-secondary: #0B1120;
+  --bg-card: #0E1628;
+  --bg-elevated: #142038;
+  --border-subtle: #1C2B46;
+  --text-primary: #ECF1FA;
+  --text-muted: #8A99B2;
+}
+
+html[data-theme='light'] {
+  --bg-primary: #F4F7FB;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #EDF2F9;
+  --border-subtle: #D8E1EE;
+  --text-primary: #0F172A;
+  --text-muted: #52627A;
+}
+
+html,
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ti-surface {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.ti-secondary {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-subtle);
+}
+
+.ti-text-muted {
+  color: var(--text-muted);
+}
+
+/* Accessible focus outlines */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #667AFF;
+  outline-offset: 2px;
+}
